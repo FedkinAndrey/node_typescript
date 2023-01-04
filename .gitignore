@@ -1,0 +1,9 @@
+/node_modules/
+
+/.idea/jsLinters/eslint.xml
+/.idea/jsLibraryMappings.xml
+/.idea/modules.xml
+/.idea/node_typescript.iml
+/.idea/prettier.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/workspace.xml
