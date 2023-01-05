@@ -1,14 +1,22 @@
-import * as FormData from 'form-data';
-import { createReadStream, createWriteStream } from 'fs';
+import { fork } from 'child_process';
 
-const readStream = createReadStream('./photo.jpeg');
-const writeStream = createWriteStream('./file.txt');
+factorial(4)
+  .then((result) => {
+    console.log('Result: ', result);
+  })
+  .catch(() => {
+    console.log('An error occurred');
+  });
 
-const form = new FormData();
-form.append('photo', readStream);
-form.append('firstName', 'Marcin');
-form.append('lastName', 'Wanago');
-
-console.log(form.getHeaders());
-
-form.pipe(writeStream);
+function factorial(n: number): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const child = fork('./child.ts');
+    child.send(n);
+    child.on('message', (result: number) => {
+      resolve(result);
+    });
+    child.on('error', (err) => {
+      reject(err);
+    });
+  });
+}
