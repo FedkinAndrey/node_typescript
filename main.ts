@@ -1,22 +1,12 @@
-import { fork } from 'child_process';
+import * as Worker from 'node:worker_threads';
 
-factorial(4)
-  .then((result) => {
-    console.log('Result: ', result);
-  })
-  .catch(() => {
-    console.log('An error occurred');
-  });
+const worker = new Worker.Worker('./src/worker.ts', {
+  workerData: {
+    value: 15,
+    path: './src/worker.ts',
+  },
+});
 
-function factorial(n: number): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const child = fork('./child.ts');
-    child.send(n);
-    child.on('message', (result: number) => {
-      resolve(result);
-    });
-    child.on('error', (err) => {
-      reject(err);
-    });
-  });
-}
+worker.on('message', (result) => {
+  console.log(result);
+});
